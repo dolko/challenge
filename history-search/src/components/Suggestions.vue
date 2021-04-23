@@ -1,18 +1,5 @@
 <template>
   <div>
-    <!-- {{ bufferValue() }} -->
-    <!-- <tr v-for="item in historyValue()" :key="item.value">
-      <div v-if="item.highlighted === true">
-        <td class="highlightedCell">
-          {{ item.value }}
-        </td>
-      </div>
-      <div v-else>
-        <td>
-          {{ item.value }}
-        </td>
-      </div>
-    </tr> -->
     <table class="styled-table">
       <tbody>
         <div v-for="item in historyValue()" :key="item.value">
@@ -27,7 +14,6 @@
             </td>
           </tr>
         </div>
-        <!-- and so on... -->
       </tbody>
     </table>
   </div>
@@ -45,6 +31,7 @@ import store, {
   setRow,
 } from "../store";
 import { getSelectionValues } from "../common/utils";
+import { MAX_RESULTS } from "../common/constants";
 
 declare global {
   interface Window {
@@ -76,15 +63,17 @@ export default class Suggestions extends Vue {
       window.fig.maxheight = `${(historyValues.length + 1) * 20 + 20}`;
     }
 
-    const selectedRow = getRow();
-    if (selectedRow >= historyValues.length) {
+    let selectedRow = getRow() % MAX_RESULTS;
+    console.log(selectedRow);
+    if (selectedRow >= historyValues.length && historyValues.length > 0) {
+      selectedRow = historyValues.length;
       setRow(historyValues.length - 1);
     }
 
     const historyRows: rowSuggestion[] = [];
     historyValues.forEach((val, index) => {
       historyRows.push({
-        highlighted: index === getRow(),
+        highlighted: index === selectedRow,
         value: val,
       });
     });

@@ -23,7 +23,7 @@ interface AppState {
 
 
 const state = Vue.observable<AppState>({ row: 0, buffer: "", history: [], shellType: ShellType.Unknown, allCache: [], zshCache: [], bashCache: [], fishCache: [], results: [] });
-export const increment = () => { if (state.row < MAX_RESULTS - 1) { state.row++ } };
+export const increment = () => { state.row++ };
 export const decrement = () => { if (state.row > 0) { state.row-- } };
 export const setRow = (newRow: number) => { state.row = newRow }
 export const getRow = () => { return state.row };

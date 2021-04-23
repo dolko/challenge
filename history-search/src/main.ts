@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import App from './App.vue';
-import { BASH_HISTORY_PATH, BASH_PATH, DOWN_ARROW_KEY, ENTER_KEY, ESCAPE_KEY, FISH_PATH, TAB_KEY, UP_ARROW_KEY, ZSH_PATH } from './common/constants';
+import { BASH_HISTORY_PATH, BASH_PATH, DOWN_ARROW_KEY, ENTER_KEY, ESCAPE_KEY, FISH_PATH, MAX_RESULTS, TAB_KEY, UP_ARROW_KEY, ZSH_PATH } from './common/constants';
 import { loadBashHistory, loadZshHistory, loadFishHistory } from './common/fig-helpers';
 import { getSelectionValues, shellPathToEnum } from './common/utils';
-import store, { increment, decrement, setBuffer, getBuffer, addToHistory, getShellType, setShellType, getRow, ShellType, addToCache } from './store';
+import store, { increment, decrement, setBuffer, getBuffer, addToHistory, getShellType, setShellType, getRow, ShellType, addToCache, setRow } from './store';
 
 declare global {
   interface Window {
@@ -26,7 +26,7 @@ const vm = new Vue({
       }, 750);
     }
     window.fig.autocomplete = (buffer: any, cursorIndex: any, windowID: any, tty: any, cwd: any, processUserIsIn: any, sshContextString: any) => {
-      // The user has changed shell types || no initial shell type was assigned
+      // The user has changed shell types || no initial shell type was assigned to prevent reloading - but we're fine now
       //if (shellPathToEnum(processUserIsIn) !== getShellType()) {
       switch (processUserIsIn) {
         case BASH_PATH:
@@ -46,43 +46,34 @@ const vm = new Vue({
           console.log("could not match to a path")
       }
       //}
-
-      console.log(`User has typed: ${buffer.slice(0, cursorIndex) + "|" + buffer.slice(cursorIndex)}`);
-      console.log(windowID, tty, cwd, processUserIsIn, sshContextString);
       setBuffer(buffer);
     }
     window.fig.keypress = (appleKeyCode: any) => {
-      let key = "unknown"
       switch (appleKeyCode) {
         case ENTER_KEY:
-          key = "enter"
           window.fig.insert(" \n");
           addToCache(getBuffer());
+          setRow(0);
           break
         case TAB_KEY:
-          key = "tab"
           const selections = getSelectionValues();
           if (selections.length > 0) {
-            const row = getRow();
+            const row = getRow() % MAX_RESULTS;
             const value_to_enter = selections[row].substring(getBuffer().length);
             window.fig.insert(value_to_enter);
           }
           break
         case UP_ARROW_KEY:
-          key = "up arrow"
           decrement();
           break
         case DOWN_ARROW_KEY:
-          key = "down arrow"
           increment();
           break
         case ESCAPE_KEY:
-          key = "escape"
           break
         default:
           console.log(appleKeyCode)
       }
-      console.log(`Pressed ${key} key`)
     }
 
 
