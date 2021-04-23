@@ -1,8 +1,9 @@
 <html>
+
 <head>
-	<script src = "./shims.js"></script>
+	<script src="./shims.js"></script>
 	<script type="text/javascript">
-		fig.init = async() => {
+		fig.init = async () => {
 			console.log("fig.js has loaded! You can now run `fig` commands.")
 
 			// fread is the promisified version of fig.fread
@@ -10,7 +11,7 @@
 			console.log(".zshrc = " + zshrc)
 
 			fig.pty.init()
-			setTimeout(async() => {
+			setTimeout(async () => {
 				// It takes a little while for the pty to start up.
 				console.log("Pty is ready!")
 
@@ -45,11 +46,14 @@
 			console.log(`Pressed ${key} key`)
 		}
 
-		fig.autocomplete = (buffer, cursorIndex) => {
+		fig.autocomplete = (buffer, cursorIndex, windowID, tty, cwd, processUserIsIn, sshContextString) => {
 			console.log(`User has typed: ${buffer.slice(0, cursorIndex) + "|" + buffer.slice(cursorIndex)}`)
-
+			console.log(processUserIsIn)
+			console.log(windowID)
+			console.log(tty)
+			console.log(cwd)
 			document.body.innerText = buffer
-
+			console.log(fig);
 			// ensure that window has a height
 			fig.maxheight = `${140}`
 
@@ -57,5 +61,7 @@
 
 	</script>
 </head>
+
 <body></body>
+
 </html>
