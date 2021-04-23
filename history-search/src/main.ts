@@ -27,25 +27,25 @@ const vm = new Vue({
     }
     window.fig.autocomplete = (buffer: any, cursorIndex: any, windowID: any, tty: any, cwd: any, processUserIsIn: any, sshContextString: any) => {
       // The user has changed shell types || no initial shell type was assigned
-      if (shellPathToEnum(processUserIsIn) !== getShellType()) {
-        switch (processUserIsIn) {
-          case BASH_PATH:
-            loadBashHistory()
-            setShellType(ShellType.Bash)
-            break
-          case ZSH_PATH:
-            loadZshHistory()
-            setShellType(ShellType.Zsh)
-            break
-          case FISH_PATH:
-            loadFishHistory()
-            setShellType(ShellType.Fish)
-            break
-          default:
-            setShellType(ShellType.Unknown)
-            console.log("could not match to a path")
-        }
+      //if (shellPathToEnum(processUserIsIn) !== getShellType()) {
+      switch (processUserIsIn) {
+        case BASH_PATH:
+          loadBashHistory()
+          setShellType(ShellType.Bash)
+          break
+        case ZSH_PATH:
+          loadZshHistory()
+          setShellType(ShellType.Zsh)
+          break
+        case FISH_PATH:
+          loadFishHistory()
+          setShellType(ShellType.Fish)
+          break
+        default:
+          setShellType(ShellType.Unknown)
+          console.log("could not match to a path")
       }
+      //}
 
       console.log(`User has typed: ${buffer.slice(0, cursorIndex) + "|" + buffer.slice(cursorIndex)}`);
       console.log(windowID, tty, cwd, processUserIsIn, sshContextString);

@@ -25,7 +25,7 @@ function filterValues(values: string[], bufferValue: string): string[] {
     } else {
         return parsedValues
             .filter((command) => command.startsWith(bufferValue))
-            .slice(-1 * MAX_RESULTS);
+            .slice(0, MAX_RESULTS);
     }
 }
 
@@ -33,18 +33,9 @@ export const getSelectionValues = () => {
     const history = getHistory();
     const cache = getCache();
     const bufferValue = getBuffer();
-    const combined = history;
-    let combinedValues: string[];
-    if (FUZZY_SEARCH) {
-        combined.push(...cache);
-        combinedValues = filterValues(combined, bufferValue);
-    }
-    else {
-        const historyValues = filterValues(history, bufferValue);
-        const cacheValues = filterValues(cache, bufferValue);
-        historyValues.push(...cacheValues);
-        combinedValues = parseValues(historyValues).slice(-1 * MAX_RESULTS).reverse();
-    }
+    const combined = history.concat(cache).reverse();
+
+    const combinedValues = filterValues(combined, bufferValue);
     return combinedValues;
 }
 
