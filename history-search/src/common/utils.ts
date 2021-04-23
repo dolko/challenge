@@ -7,7 +7,7 @@ import fuzz from "fuzzball";
 
 function parseValues(values: string[]) {
     return [...new Set(values)].filter((ele) => {
-        if (ele === "") {
+        if (ele.trim().length === 0) {
             return false
         }
         return true
