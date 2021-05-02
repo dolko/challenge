@@ -14,7 +14,9 @@ export const FISH_PATH = "/usr/local/bin/fish"
 export const ZSH_PATH = "/bin/zsh"
 export const BASH_PATH = "/bin/bash"
 
+
 // These paths are important for retrieving the history for the type of shell
 export const BASH_HISTORY_PATH = "~/.bash_history";
 export const ZSH_HISTORY_PATH = "~/.zsh_history";
 export const FISH_HISTORY_PATH = "~/.local/share/fish/fish_history";
+export const ZSH_CONFIG_PATH = "~/.zshrc"
