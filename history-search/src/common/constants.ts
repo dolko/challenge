@@ -6,7 +6,7 @@ export const TAB_KEY = "48"
 export const ENTER_KEY = "36"
 
 // Parameter that the app uses for things like result numbers, whether to use fuzzy etc.
-export const MAX_RESULTS = 10
+export const MAX_RESULTS = 5
 export const FUZZY_SEARCH = false
 
 // These paths match to what is given to us by fig

@@ -14,21 +14,37 @@ function parseValues(values: string[]) {
     });
 }
 
+function isSubstring(value: string, bufferValue: string): boolean {
+    if (value.includes(bufferValue)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 function filterValues(values: string[], bufferValue: string): string[] {
+    console.log(values.length);
     const parsedValues = parseValues(values);
+    console.log(parsedValues.length);
     const rowNumber = getRow();
     const pageNumber = Math.floor(rowNumber / MAX_RESULTS)
 
     if (FUZZY_SEARCH && bufferValue.length > 0) {
-        const topFuzzy = fuzz.extract(bufferValue, parsedValues).slice(0, MAX_RESULTS);
-        return topFuzzy.map((value, index, arr) => {
-            return value[0];
-        });
+        // The below is a fuzzy (levenshtein distance) implementation of the fuzzy search
+        // Leaving commented for now as this is not the implementation that we want for this iteration
+        // const topFuzzy = fuzz.extract(bufferValue, parsedValues).slice(0, MAX_RESULTS);
+        // return topFuzzy.map((value, index, arr) => {
+        //     return value[0];
+        // });
+        // The current implementation we are using is a substring match. We want to filter matches
+        // based on whether the buffer value is a substring of the value
+        return parsedValues.filter(command => isSubstring(command, bufferValue))
     } else {
-        return parsedValues
+        const filtered = parsedValues
             .filter((command) => command.startsWith(bufferValue))
-            .slice(pageNumber * MAX_RESULTS, (pageNumber + 1) * MAX_RESULTS);
+        console.log(`There are: ${filtered.length} amount of results that have been filtered`);
+        return filtered.slice(pageNumber * MAX_RESULTS, (pageNumber + 1) * MAX_RESULTS);
     }
 }
 

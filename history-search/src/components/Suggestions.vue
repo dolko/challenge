@@ -58,13 +58,12 @@ export default class Suggestions extends Vue {
     // Figure out how big we want the dropdown
     // Unfortunately there's a weird fig interaction taht if you make the maxheight zero then it stops recording anything
     if (historyValues.length === 0) {
-      window.fig.maxheight = `${10}`;
+      window.fig.maxheight = `${20}`;
     } else {
-      window.fig.maxheight = `${(historyValues.length + 1) * 20 + 20}`;
+      window.fig.maxheight = `${historyValues.length * 26}`;
     }
 
     let selectedRow = getRow() % MAX_RESULTS;
-    console.log(selectedRow);
     if (selectedRow >= historyValues.length && historyValues.length > 0) {
       selectedRow = historyValues.length;
       setRow(historyValues.length - 1);
@@ -85,26 +84,35 @@ export default class Suggestions extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .styled-table {
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
   font-size: 0.9em;
   font-family: sans-serif;
-  min-width: 240px;
-  background-color: rgb(255, 255, 255);
-}
-
-.styled-table thead tr {
-  background-color: #009879;
-  color: #ffffff;
-  text-align: left;
+  width: 100%;
+  color: rgb(180, 180, 180);
+  background-color: rgb(48, 48, 48);
+  white-space: nowrap;
+  border: 1px;
 }
 
 .styled-table th,
 .styled-table td {
-  padding: 2px 2px;
+  height: 20px;
+  width: 100%;
 }
 
 .styled-table tbody tr.active-row {
-  background-color: #5c887f;
+  background-color: rgb(30, 90, 199);
+  color: rgb(253, 253, 253);
+  width: 100%;
+  height: 100%;
+}
+
+.active-item {
+  background-color: var(--selected-bg-color);
+}
+
+.active-item .text {
+  color: var(--selected-text-color);
 }
 </style>
 

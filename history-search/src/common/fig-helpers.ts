@@ -34,14 +34,29 @@ const ptyexecute = (command: any): Promise<string> => {
 
 export const loadBashHistory = async () => {
     const bash_history = await fread(BASH_HISTORY_PATH);
+    const bash_history_format = await ptyexecute("$HISTTIMEFORMAT");
+    if (bash_history_format.trim().length === 0) {
+        // The user doesn't have a histtimeformat
+        console.log("User does not have a HISTTIMEFORMAT set");
+    }
+    else {
+        console.log(`History time format: ${bash_history_format}`);
+    }
     clearHistory();
     addToHistory(bash_history.split("\n"));
+}
+
+const parseZshHistory = (history: string): string[] => {
+    const historyLines = history.split("\n");
+    // Need to check if the zsh variable for whether it is using a 
+
+    return historyLines;
 }
 
 export const loadZshHistory = async () => {
     const zsh_history = await fread(ZSH_HISTORY_PATH);
     clearHistory();
-    addToHistory(zsh_history.split("\n"));
+    addToHistory(parseZshHistory(zsh_history));
 }
 
 export const loadFishHistory = async () => {

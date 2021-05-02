@@ -53,10 +53,10 @@ export const getCache = (): string[] => {
     switch (state.shellType) {
         case ShellType.Bash:
             return state.bashCache
-        case ShellType.Zsh:
-            return state.zshCache
-        case ShellType.Fish:
-            return state.fishCache
+        // case ShellType.Zsh:
+        //     return state.zshCache
+        // case ShellType.Fish:
+        //     return state.fishCache
     }
     return []
 }
